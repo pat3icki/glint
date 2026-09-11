@@ -9,7 +9,7 @@
 #   make clean-all   – remove build artefacts + node_modules
 # ============================================================
 
-.PHONY: init compile test clean clean-all
+.PHONY: init compile test clean clean-abi clean-bin clean-bindings clean-all
 
 CONTRACT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
@@ -57,11 +57,17 @@ clean:
 	rm -rf $(HARDHAT_HOME) $(CONTRACT_DIR)/abi $(CONTRACT_DIR)/bin $(CONTRACT_DIR)/bindings
 	@echo "✓ Clean done."
 
+clean-abi:
+	rm -rf $(CONTRACT_DIR)/abi
+
+clean-bin:
+	rm -rf $(CONTRACT_DIR)/bin
 
 clean-bindings:
-	rm -rf go-binding
+	rm -rf $(CONTRACT_DIR)/bindings
 
 clean-all: clean
 	@echo "→ Removing node_modules..."
 	rm -rf $(CONTRACT_DIR)/node_modules $(CONTRACT_DIR)/contracts
 	@echo "✓ Full clean done."
+

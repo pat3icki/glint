@@ -186,10 +186,6 @@ contract GiftCardNFT is ERC1155, AccessControl, Pausable, ReentrancyGuard {
     }
 
     // ------------------- Admin Controls -------------------
-    function grantMinterRole(address minter) external onlyRole(DEFAULT_ADMIN_ROLE) {
-        _grantRole(MINTER_ROLE, minter);
-        emit MinterRoleGranted(minter);
-    }
 
     function pause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
@@ -198,6 +194,12 @@ contract GiftCardNFT is ERC1155, AccessControl, Pausable, ReentrancyGuard {
     function unpause() external onlyRole(DEFAULT_ADMIN_ROLE) {
         _unpause();
     }
+    
+    function grantMinterRole(address minter) external onlyRole(DEFAULT_ADMIN_ROLE) {
+        _grantRole(MINTER_ROLE, minter);
+        emit MinterRoleGranted(minter);
+    }
+
 
     // Override required by Solidity
     function supportsInterface(bytes4 interfaceId)
