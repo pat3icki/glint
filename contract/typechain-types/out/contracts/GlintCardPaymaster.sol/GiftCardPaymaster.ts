@@ -21,7 +21,7 @@ import type {
   TypedLogDescription,
   TypedListener,
   TypedContractMethod,
-} from "../common";
+} from "../../../common";
 
 export type PackedUserOperationStruct = {
   sender: AddressLike;
@@ -68,6 +68,7 @@ export interface GiftCardPaymasterInterface extends Interface {
       | "deposit"
       | "entryPoint"
       | "getDeposit"
+      | "getHash"
       | "owner"
       | "pendingOwner"
       | "postOp"
@@ -116,6 +117,10 @@ export interface GiftCardPaymasterInterface extends Interface {
   encodeFunctionData(
     functionFragment: "getDeposit",
     values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getHash",
+    values: [PackedUserOperationStruct, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(functionFragment: "owner", values?: undefined): string;
   encodeFunctionData(
@@ -179,6 +184,7 @@ export interface GiftCardPaymasterInterface extends Interface {
   decodeFunctionResult(functionFragment: "deposit", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "entryPoint", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "getDeposit", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "getHash", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "pendingOwner",
@@ -318,6 +324,16 @@ export interface GiftCardPaymaster extends BaseContract {
 
   getDeposit: TypedContractMethod<[], [bigint], "view">;
 
+  getHash: TypedContractMethod<
+    [
+      userOp: PackedUserOperationStruct,
+      validUntil: BigNumberish,
+      validAfter: BigNumberish
+    ],
+    [string],
+    "view"
+  >;
+
   owner: TypedContractMethod<[], [string], "view">;
 
   pendingOwner: TypedContractMethod<[], [string], "view">;
@@ -401,6 +417,17 @@ export interface GiftCardPaymaster extends BaseContract {
   getFunction(
     nameOrSignature: "getDeposit"
   ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "getHash"
+  ): TypedContractMethod<
+    [
+      userOp: PackedUserOperationStruct,
+      validUntil: BigNumberish,
+      validAfter: BigNumberish
+    ],
+    [string],
+    "view"
+  >;
   getFunction(
     nameOrSignature: "owner"
   ): TypedContractMethod<[], [string], "view">;

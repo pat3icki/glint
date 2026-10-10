@@ -134,13 +134,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.Strings__factory>;
     getContractFactory(
-      name: "GiftCardNFT",
-      signerOrOptions?: ethers.Signer | FactoryOptions
-    ): Promise<Contracts.GiftCardNFT__factory>;
-    getContractFactory(
       name: "GiftCardPaymaster",
       signerOrOptions?: ethers.Signer | FactoryOptions
     ): Promise<Contracts.GiftCardPaymaster__factory>;
+    getContractFactory(
+      name: "GlintDough",
+      signerOrOptions?: ethers.Signer | FactoryOptions
+    ): Promise<Contracts.GlintDough__factory>;
 
     getContractAt(
       name: "BasePaymaster",
@@ -293,15 +293,15 @@ declare module "hardhat/types/runtime" {
       signer?: ethers.Signer
     ): Promise<Contracts.Strings>;
     getContractAt(
-      name: "GiftCardNFT",
+      name: "GiftCardPaymaster",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.GiftCardNFT>;
+    ): Promise<Contracts.GiftCardPaymaster>;
     getContractAt(
-      name: "GiftCardPaymaster",
+      name: "GlintDough",
       address: string | ethers.Addressable,
       signer?: ethers.Signer
-    ): Promise<Contracts.GiftCardPaymaster>;
+    ): Promise<Contracts.GlintDough>;
 
     deployContract(
       name: "BasePaymaster",
@@ -424,13 +424,13 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Strings>;
     deployContract(
-      name: "GiftCardNFT",
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.GiftCardNFT>;
-    deployContract(
       name: "GiftCardPaymaster",
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.GiftCardPaymaster>;
+    deployContract(
+      name: "GlintDough",
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.GlintDough>;
 
     deployContract(
       name: "BasePaymaster",
@@ -583,15 +583,15 @@ declare module "hardhat/types/runtime" {
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.Strings>;
     deployContract(
-      name: "GiftCardNFT",
-      args: any[],
-      signerOrOptions?: ethers.Signer | DeployContractOptions
-    ): Promise<Contracts.GiftCardNFT>;
-    deployContract(
       name: "GiftCardPaymaster",
       args: any[],
       signerOrOptions?: ethers.Signer | DeployContractOptions
     ): Promise<Contracts.GiftCardPaymaster>;
+    deployContract(
+      name: "GlintDough",
+      args: any[],
+      signerOrOptions?: ethers.Signer | DeployContractOptions
+    ): Promise<Contracts.GlintDough>;
 
     // default types
     getContractFactory(

@@ -21,58 +21,91 @@ import type {
   TypedLogDescription,
   TypedListener,
   TypedContractMethod,
-} from "../common";
+} from "../../common";
 
-export interface GiftCardNFTInterface extends Interface {
+export declare namespace GlintDough {
+  export type TokenDataStruct = {
+    decimals: BigNumberish;
+    smartContract: AddressLike;
+    symbol: string;
+    isActive: boolean;
+  };
+
+  export type TokenDataStructOutput = [
+    decimals: bigint,
+    smartContract: string,
+    symbol: string,
+    isActive: boolean
+  ] & {
+    decimals: bigint;
+    smartContract: string;
+    symbol: string;
+    isActive: boolean;
+  };
+}
+
+export interface GlintDoughInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "DEFAULT_ADMIN_ROLE"
       | "MINTER_ROLE"
-      | "addCardType"
+      | "activateCollateralToken"
+      | "addCollateralToken"
+      | "addVoucher"
       | "balanceOf"
       | "balanceOfBatch"
-      | "batchMintGiftCards"
-      | "cardTypes"
+      | "collateralTokens"
+      | "deactivateCollateralToken"
+      | "exists"
+      | "existsByAddress"
       | "getRoleAdmin"
+      | "getToken"
+      | "getTokenByAddress"
+      | "grantMinterRole"
       | "grantRole"
       | "hasRole"
       | "isApprovedForAll"
-      | "name"
+      | "mint"
+      | "mintBatch"
+      | "nextTokenId"
       | "pause"
       | "paused"
-      | "physicalCardChecksums"
-      | "redeemCard"
-      | "registerPhysicalCards"
+      | "redeem"
+      | "redeemTo"
       | "renounceRole"
       | "revokeRole"
       | "safeBatchTransferFrom"
       | "safeTransferFrom"
       | "setApprovalForAll"
+      | "setFeesAddress"
       | "supportsInterface"
-      | "symbol"
-      | "toggleCardType"
+      | "toggleVoucher"
       | "unpause"
       | "uri"
-      | "verifyPhysicalCard"
-      | "version"
+      | "vouchers"
   ): FunctionFragment;
 
   getEvent(
     nameOrSignatureOrTopic:
       | "ApprovalForAll"
-      | "CardRedeemed"
-      | "CardTypeAdded"
-      | "CardTypeDeactivated"
-      | "CardsMinted"
+      | "FeesAddressUpdated"
+      | "MinterRoleGranted"
       | "Paused"
       | "PhysicalCardRegistered"
       | "RoleAdminChanged"
       | "RoleGranted"
       | "RoleRevoked"
+      | "TokenAdded"
+      | "TokenStatusChanged"
       | "TransferBatch"
       | "TransferSingle"
       | "URI"
       | "Unpaused"
+      | "VoucherAdded"
+      | "VoucherMintedSingle"
+      | "VoucherRedeemed"
+      | "VoucherToggled"
+      | "VouchersMintedBatch"
   ): EventFragment;
 
   encodeFunctionData(
@@ -84,8 +117,16 @@ export interface GiftCardNFTInterface extends Interface {
     values?: undefined
   ): string;
   encodeFunctionData(
-    functionFragment: "addCardType",
-    values: [BigNumberish, AddressLike, string, BigNumberish]
+    functionFragment: "activateCollateralToken",
+    values: [string]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addCollateralToken",
+    values: [string, AddressLike, string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "addVoucher",
+    values: [string, BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "balanceOf",
@@ -96,16 +137,30 @@ export interface GiftCardNFTInterface extends Interface {
     values: [AddressLike[], BigNumberish[]]
   ): string;
   encodeFunctionData(
-    functionFragment: "batchMintGiftCards",
-    values: [BigNumberish[], BigNumberish[], AddressLike, BytesLike]
+    functionFragment: "collateralTokens",
+    values: [string]
   ): string;
   encodeFunctionData(
-    functionFragment: "cardTypes",
-    values: [BigNumberish]
+    functionFragment: "deactivateCollateralToken",
+    values: [string]
+  ): string;
+  encodeFunctionData(functionFragment: "exists", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "existsByAddress",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "getRoleAdmin",
     values: [BytesLike]
+  ): string;
+  encodeFunctionData(functionFragment: "getToken", values: [string]): string;
+  encodeFunctionData(
+    functionFragment: "getTokenByAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "grantMinterRole",
+    values: [AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "grantRole",
@@ -119,20 +174,27 @@ export interface GiftCardNFTInterface extends Interface {
     functionFragment: "isApprovedForAll",
     values: [AddressLike, AddressLike]
   ): string;
-  encodeFunctionData(functionFragment: "name", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "mint",
+    values: [BigNumberish, BigNumberish, AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "mintBatch",
+    values: [BigNumberish[], BigNumberish[], AddressLike, BytesLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nextTokenId",
+    values?: undefined
+  ): string;
   encodeFunctionData(functionFragment: "pause", values?: undefined): string;
   encodeFunctionData(functionFragment: "paused", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "physicalCardChecksums",
-    values: [BytesLike]
+    functionFragment: "redeem",
+    values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "redeemCard",
+    functionFragment: "redeemTo",
     values: [BigNumberish, AddressLike, BigNumberish]
-  ): string;
-  encodeFunctionData(
-    functionFragment: "registerPhysicalCards",
-    values: [BytesLike[], BytesLike[]]
   ): string;
   encodeFunctionData(
     functionFragment: "renounceRole",
@@ -161,21 +223,23 @@ export interface GiftCardNFTInterface extends Interface {
     values: [AddressLike, boolean]
   ): string;
   encodeFunctionData(
+    functionFragment: "setFeesAddress",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
     functionFragment: "supportsInterface",
     values: [BytesLike]
   ): string;
-  encodeFunctionData(functionFragment: "symbol", values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "toggleCardType",
+    functionFragment: "toggleVoucher",
     values: [BigNumberish, boolean]
   ): string;
   encodeFunctionData(functionFragment: "unpause", values?: undefined): string;
   encodeFunctionData(functionFragment: "uri", values: [BigNumberish]): string;
   encodeFunctionData(
-    functionFragment: "verifyPhysicalCard",
-    values: [BytesLike, BytesLike]
+    functionFragment: "vouchers",
+    values: [BigNumberish]
   ): string;
-  encodeFunctionData(functionFragment: "version", values?: undefined): string;
 
   decodeFunctionResult(
     functionFragment: "DEFAULT_ADMIN_ROLE",
@@ -186,21 +250,43 @@ export interface GiftCardNFTInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "addCardType",
+    functionFragment: "activateCollateralToken",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(
+    functionFragment: "addCollateralToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "addVoucher", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "balanceOfBatch",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
-    functionFragment: "batchMintGiftCards",
+    functionFragment: "collateralTokens",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "cardTypes", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "deactivateCollateralToken",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "exists", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "existsByAddress",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getRoleAdmin",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "getToken", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getTokenByAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "grantMinterRole",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "grantRole", data: BytesLike): Result;
@@ -209,18 +295,16 @@ export interface GiftCardNFTInterface extends Interface {
     functionFragment: "isApprovedForAll",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "mint", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "mintBatch", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "nextTokenId",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "pause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "paused", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "physicalCardChecksums",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "redeemCard", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "registerPhysicalCards",
-    data: BytesLike
-  ): Result;
+  decodeFunctionResult(functionFragment: "redeem", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "redeemTo", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "renounceRole",
     data: BytesLike
@@ -239,21 +323,20 @@ export interface GiftCardNFTInterface extends Interface {
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "setFeesAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
     functionFragment: "supportsInterface",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "symbol", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "toggleCardType",
+    functionFragment: "toggleVoucher",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "unpause", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "uri", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "verifyPhysicalCard",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "version", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "vouchers", data: BytesLike): Result;
 }
 
 export namespace ApprovalForAllEvent {
@@ -278,24 +361,11 @@ export namespace ApprovalForAllEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace CardRedeemedEvent {
-  export type InputTuple = [
-    tokenId: BigNumberish,
-    redeemer: AddressLike,
-    to: AddressLike,
-    amount: BigNumberish
-  ];
-  export type OutputTuple = [
-    tokenId: bigint,
-    redeemer: string,
-    to: string,
-    amount: bigint
-  ];
+export namespace FeesAddressUpdatedEvent {
+  export type InputTuple = [feesAddress: AddressLike];
+  export type OutputTuple = [feesAddress: string];
   export interface OutputObject {
-    tokenId: bigint;
-    redeemer: string;
-    to: string;
-    amount: bigint;
+    feesAddress: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -303,58 +373,11 @@ export namespace CardRedeemedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export namespace CardTypeAddedEvent {
-  export type InputTuple = [
-    tokenId: BigNumberish,
-    token: AddressLike,
-    denomination: BigNumberish
-  ];
-  export type OutputTuple = [
-    tokenId: bigint,
-    token: string,
-    denomination: bigint
-  ];
-  export interface OutputObject {
-    tokenId: bigint;
-    token: string;
-    denomination: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace CardTypeDeactivatedEvent {
-  export type InputTuple = [tokenId: BigNumberish];
-  export type OutputTuple = [tokenId: bigint];
-  export interface OutputObject {
-    tokenId: bigint;
-  }
-  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
-  export type Filter = TypedDeferredTopicFilter<Event>;
-  export type Log = TypedEventLog<Event>;
-  export type LogDescription = TypedLogDescription<Event>;
-}
-
-export namespace CardsMintedEvent {
-  export type InputTuple = [
-    minter: AddressLike,
-    tokenIds: BigNumberish[],
-    amounts: BigNumberish[],
-    to: AddressLike
-  ];
-  export type OutputTuple = [
-    minter: string,
-    tokenIds: bigint[],
-    amounts: bigint[],
-    to: string
-  ];
+export namespace MinterRoleGrantedEvent {
+  export type InputTuple = [minter: AddressLike];
+  export type OutputTuple = [minter: string];
   export interface OutputObject {
     minter: string;
-    tokenIds: bigint[];
-    amounts: bigint[];
-    to: string;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -445,6 +468,44 @@ export namespace RoleRevokedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
+export namespace TokenAddedEvent {
+  export type InputTuple = [
+    key: string,
+    smartContract: AddressLike,
+    symbol: string,
+    decimals: BigNumberish
+  ];
+  export type OutputTuple = [
+    key: string,
+    smartContract: string,
+    symbol: string,
+    decimals: bigint
+  ];
+  export interface OutputObject {
+    key: string;
+    smartContract: string;
+    symbol: string;
+    decimals: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace TokenStatusChangedEvent {
+  export type InputTuple = [key: string, isActive: boolean];
+  export type OutputTuple = [key: string, isActive: boolean];
+  export interface OutputObject {
+    key: string;
+    isActive: boolean;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
 export namespace TransferBatchEvent {
   export type InputTuple = [
     operator: AddressLike,
@@ -526,11 +587,121 @@ export namespace UnpausedEvent {
   export type LogDescription = TypedLogDescription<Event>;
 }
 
-export interface GiftCardNFT extends BaseContract {
-  connect(runner?: ContractRunner | null): GiftCardNFT;
+export namespace VoucherAddedEvent {
+  export type InputTuple = [
+    tokenId: BigNumberish,
+    token: AddressLike,
+    denomination: BigNumberish
+  ];
+  export type OutputTuple = [
+    tokenId: bigint,
+    token: string,
+    denomination: bigint
+  ];
+  export interface OutputObject {
+    tokenId: bigint;
+    token: string;
+    denomination: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace VoucherMintedSingleEvent {
+  export type InputTuple = [
+    minter: AddressLike,
+    tokenId: BigNumberish,
+    quantity: BigNumberish,
+    to: AddressLike
+  ];
+  export type OutputTuple = [
+    minter: string,
+    tokenId: bigint,
+    quantity: bigint,
+    to: string
+  ];
+  export interface OutputObject {
+    minter: string;
+    tokenId: bigint;
+    quantity: bigint;
+    to: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace VoucherRedeemedEvent {
+  export type InputTuple = [
+    tokenId: BigNumberish,
+    redeemer: AddressLike,
+    to: AddressLike,
+    quantity: BigNumberish
+  ];
+  export type OutputTuple = [
+    tokenId: bigint,
+    redeemer: string,
+    to: string,
+    quantity: bigint
+  ];
+  export interface OutputObject {
+    tokenId: bigint;
+    redeemer: string;
+    to: string;
+    quantity: bigint;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace VoucherToggledEvent {
+  export type InputTuple = [tokenId: BigNumberish, status: boolean];
+  export type OutputTuple = [tokenId: bigint, status: boolean];
+  export interface OutputObject {
+    tokenId: bigint;
+    status: boolean;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export namespace VouchersMintedBatchEvent {
+  export type InputTuple = [
+    minter: AddressLike,
+    tokenIds: BigNumberish[],
+    quantities: BigNumberish[],
+    to: AddressLike
+  ];
+  export type OutputTuple = [
+    minter: string,
+    tokenIds: bigint[],
+    quantities: bigint[],
+    to: string
+  ];
+  export interface OutputObject {
+    minter: string;
+    tokenIds: bigint[];
+    quantities: bigint[];
+    to: string;
+  }
+  export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
+  export type Filter = TypedDeferredTopicFilter<Event>;
+  export type Log = TypedEventLog<Event>;
+  export type LogDescription = TypedLogDescription<Event>;
+}
+
+export interface GlintDough extends BaseContract {
+  connect(runner?: ContractRunner | null): GlintDough;
   waitForDeployment(): Promise<this>;
 
-  interface: GiftCardNFTInterface;
+  interface: GlintDoughInterface;
 
   queryFilter<TCEvent extends TypedContractEvent>(
     event: TCEvent,
@@ -573,14 +744,26 @@ export interface GiftCardNFT extends BaseContract {
 
   MINTER_ROLE: TypedContractMethod<[], [string], "view">;
 
-  addCardType: TypedContractMethod<
+  activateCollateralToken: TypedContractMethod<
+    [key: string],
+    [void],
+    "nonpayable"
+  >;
+
+  addCollateralToken: TypedContractMethod<
     [
-      tokenId: BigNumberish,
-      collateral_token: AddressLike,
-      token_symbol: string,
-      denomination: BigNumberish
+      key: string,
+      smartContract: AddressLike,
+      symbol: string,
+      decimals: BigNumberish
     ],
     [void],
+    "nonpayable"
+  >;
+
+  addVoucher: TypedContractMethod<
+    [token: string, denomination: BigNumberish, creationFees: BigNumberish],
+    [bigint],
     "nonpayable"
   >;
 
@@ -596,31 +779,52 @@ export interface GiftCardNFT extends BaseContract {
     "view"
   >;
 
-  batchMintGiftCards: TypedContractMethod<
+  collateralTokens: TypedContractMethod<
+    [arg0: string],
     [
-      tokenIds: BigNumberish[],
-      amounts: BigNumberish[],
-      to: AddressLike,
-      data: BytesLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-
-  cardTypes: TypedContractMethod<
-    [arg0: BigNumberish],
-    [
-      [string, string, bigint, boolean] & {
-        collateral_token: string;
-        token_symbol: string;
-        denomination: bigint;
+      [bigint, string, string, boolean] & {
+        decimals: bigint;
+        smartContract: string;
+        symbol: string;
         isActive: boolean;
       }
     ],
     "view"
   >;
 
+  deactivateCollateralToken: TypedContractMethod<
+    [key: string],
+    [void],
+    "nonpayable"
+  >;
+
+  exists: TypedContractMethod<[key: string], [boolean], "view">;
+
+  existsByAddress: TypedContractMethod<
+    [smartContract: AddressLike],
+    [boolean],
+    "view"
+  >;
+
   getRoleAdmin: TypedContractMethod<[role: BytesLike], [string], "view">;
+
+  getToken: TypedContractMethod<
+    [key: string],
+    [GlintDough.TokenDataStructOutput],
+    "view"
+  >;
+
+  getTokenByAddress: TypedContractMethod<
+    [smartContract: AddressLike],
+    [GlintDough.TokenDataStructOutput],
+    "view"
+  >;
+
+  grantMinterRole: TypedContractMethod<
+    [minter: AddressLike],
+    [void],
+    "nonpayable"
+  >;
 
   grantRole: TypedContractMethod<
     [role: BytesLike, account: AddressLike],
@@ -640,26 +844,42 @@ export interface GiftCardNFT extends BaseContract {
     "view"
   >;
 
-  name: TypedContractMethod<[], [string], "view">;
+  mint: TypedContractMethod<
+    [
+      tokenId: BigNumberish,
+      quantity: BigNumberish,
+      to: AddressLike,
+      data: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  mintBatch: TypedContractMethod<
+    [
+      tokenIds: BigNumberish[],
+      quantities: BigNumberish[],
+      to: AddressLike,
+      data: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+
+  nextTokenId: TypedContractMethod<[], [bigint], "view">;
 
   pause: TypedContractMethod<[], [void], "nonpayable">;
 
   paused: TypedContractMethod<[], [boolean], "view">;
 
-  physicalCardChecksums: TypedContractMethod<
-    [arg0: BytesLike],
-    [[string, string] & { Checksum: string; QRCode: string }],
-    "view"
-  >;
-
-  redeemCard: TypedContractMethod<
-    [tokenId: BigNumberish, to: AddressLike, amount: BigNumberish],
+  redeem: TypedContractMethod<
+    [tokenId: BigNumberish, quantity: BigNumberish],
     [void],
     "nonpayable"
   >;
 
-  registerPhysicalCards: TypedContractMethod<
-    [serialHashes: BytesLike[], checksums: BytesLike[]],
+  redeemTo: TypedContractMethod<
+    [tokenId: BigNumberish, to: AddressLike, quantity: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -706,15 +926,19 @@ export interface GiftCardNFT extends BaseContract {
     "nonpayable"
   >;
 
+  setFeesAddress: TypedContractMethod<
+    [newFeesAddress: AddressLike],
+    [void],
+    "nonpayable"
+  >;
+
   supportsInterface: TypedContractMethod<
     [interfaceId: BytesLike],
     [boolean],
     "view"
   >;
 
-  symbol: TypedContractMethod<[], [string], "view">;
-
-  toggleCardType: TypedContractMethod<
+  toggleVoucher: TypedContractMethod<
     [tokenId: BigNumberish, status: boolean],
     [void],
     "nonpayable"
@@ -724,13 +948,19 @@ export interface GiftCardNFT extends BaseContract {
 
   uri: TypedContractMethod<[arg0: BigNumberish], [string], "view">;
 
-  verifyPhysicalCard: TypedContractMethod<
-    [serialHash: BytesLike, checksum: BytesLike],
-    [boolean],
+  vouchers: TypedContractMethod<
+    [arg0: BigNumberish],
+    [
+      [string, string, bigint, bigint, boolean] & {
+        token: string;
+        collateral_token: string;
+        denomination: bigint;
+        creationFees: bigint;
+        is_active: boolean;
+      }
+    ],
     "view"
   >;
-
-  version: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -743,15 +973,25 @@ export interface GiftCardNFT extends BaseContract {
     nameOrSignature: "MINTER_ROLE"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
-    nameOrSignature: "addCardType"
+    nameOrSignature: "activateCollateralToken"
+  ): TypedContractMethod<[key: string], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "addCollateralToken"
   ): TypedContractMethod<
     [
-      tokenId: BigNumberish,
-      collateral_token: AddressLike,
-      token_symbol: string,
-      denomination: BigNumberish
+      key: string,
+      smartContract: AddressLike,
+      symbol: string,
+      decimals: BigNumberish
     ],
     [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "addVoucher"
+  ): TypedContractMethod<
+    [token: string, denomination: BigNumberish, creationFees: BigNumberish],
+    [bigint],
     "nonpayable"
   >;
   getFunction(
@@ -769,34 +1009,48 @@ export interface GiftCardNFT extends BaseContract {
     "view"
   >;
   getFunction(
-    nameOrSignature: "batchMintGiftCards"
+    nameOrSignature: "collateralTokens"
   ): TypedContractMethod<
+    [arg0: string],
     [
-      tokenIds: BigNumberish[],
-      amounts: BigNumberish[],
-      to: AddressLike,
-      data: BytesLike
-    ],
-    [void],
-    "nonpayable"
-  >;
-  getFunction(
-    nameOrSignature: "cardTypes"
-  ): TypedContractMethod<
-    [arg0: BigNumberish],
-    [
-      [string, string, bigint, boolean] & {
-        collateral_token: string;
-        token_symbol: string;
-        denomination: bigint;
+      [bigint, string, string, boolean] & {
+        decimals: bigint;
+        smartContract: string;
+        symbol: string;
         isActive: boolean;
       }
     ],
     "view"
   >;
   getFunction(
+    nameOrSignature: "deactivateCollateralToken"
+  ): TypedContractMethod<[key: string], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "exists"
+  ): TypedContractMethod<[key: string], [boolean], "view">;
+  getFunction(
+    nameOrSignature: "existsByAddress"
+  ): TypedContractMethod<[smartContract: AddressLike], [boolean], "view">;
+  getFunction(
     nameOrSignature: "getRoleAdmin"
   ): TypedContractMethod<[role: BytesLike], [string], "view">;
+  getFunction(
+    nameOrSignature: "getToken"
+  ): TypedContractMethod<
+    [key: string],
+    [GlintDough.TokenDataStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "getTokenByAddress"
+  ): TypedContractMethod<
+    [smartContract: AddressLike],
+    [GlintDough.TokenDataStructOutput],
+    "view"
+  >;
+  getFunction(
+    nameOrSignature: "grantMinterRole"
+  ): TypedContractMethod<[minter: AddressLike], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "grantRole"
   ): TypedContractMethod<
@@ -819,8 +1073,32 @@ export interface GiftCardNFT extends BaseContract {
     "view"
   >;
   getFunction(
-    nameOrSignature: "name"
-  ): TypedContractMethod<[], [string], "view">;
+    nameOrSignature: "mint"
+  ): TypedContractMethod<
+    [
+      tokenId: BigNumberish,
+      quantity: BigNumberish,
+      to: AddressLike,
+      data: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "mintBatch"
+  ): TypedContractMethod<
+    [
+      tokenIds: BigNumberish[],
+      quantities: BigNumberish[],
+      to: AddressLike,
+      data: BytesLike
+    ],
+    [void],
+    "nonpayable"
+  >;
+  getFunction(
+    nameOrSignature: "nextTokenId"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "pause"
   ): TypedContractMethod<[], [void], "nonpayable">;
@@ -828,23 +1106,16 @@ export interface GiftCardNFT extends BaseContract {
     nameOrSignature: "paused"
   ): TypedContractMethod<[], [boolean], "view">;
   getFunction(
-    nameOrSignature: "physicalCardChecksums"
+    nameOrSignature: "redeem"
   ): TypedContractMethod<
-    [arg0: BytesLike],
-    [[string, string] & { Checksum: string; QRCode: string }],
-    "view"
-  >;
-  getFunction(
-    nameOrSignature: "redeemCard"
-  ): TypedContractMethod<
-    [tokenId: BigNumberish, to: AddressLike, amount: BigNumberish],
+    [tokenId: BigNumberish, quantity: BigNumberish],
     [void],
     "nonpayable"
   >;
   getFunction(
-    nameOrSignature: "registerPhysicalCards"
+    nameOrSignature: "redeemTo"
   ): TypedContractMethod<
-    [serialHashes: BytesLike[], checksums: BytesLike[]],
+    [tokenId: BigNumberish, to: AddressLike, quantity: BigNumberish],
     [void],
     "nonpayable"
   >;
@@ -896,13 +1167,13 @@ export interface GiftCardNFT extends BaseContract {
     "nonpayable"
   >;
   getFunction(
+    nameOrSignature: "setFeesAddress"
+  ): TypedContractMethod<[newFeesAddress: AddressLike], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "supportsInterface"
   ): TypedContractMethod<[interfaceId: BytesLike], [boolean], "view">;
   getFunction(
-    nameOrSignature: "symbol"
-  ): TypedContractMethod<[], [string], "view">;
-  getFunction(
-    nameOrSignature: "toggleCardType"
+    nameOrSignature: "toggleVoucher"
   ): TypedContractMethod<
     [tokenId: BigNumberish, status: boolean],
     [void],
@@ -915,15 +1186,20 @@ export interface GiftCardNFT extends BaseContract {
     nameOrSignature: "uri"
   ): TypedContractMethod<[arg0: BigNumberish], [string], "view">;
   getFunction(
-    nameOrSignature: "verifyPhysicalCard"
+    nameOrSignature: "vouchers"
   ): TypedContractMethod<
-    [serialHash: BytesLike, checksum: BytesLike],
-    [boolean],
+    [arg0: BigNumberish],
+    [
+      [string, string, bigint, bigint, boolean] & {
+        token: string;
+        collateral_token: string;
+        denomination: bigint;
+        creationFees: bigint;
+        is_active: boolean;
+      }
+    ],
     "view"
   >;
-  getFunction(
-    nameOrSignature: "version"
-  ): TypedContractMethod<[], [string], "view">;
 
   getEvent(
     key: "ApprovalForAll"
@@ -933,32 +1209,18 @@ export interface GiftCardNFT extends BaseContract {
     ApprovalForAllEvent.OutputObject
   >;
   getEvent(
-    key: "CardRedeemed"
+    key: "FeesAddressUpdated"
   ): TypedContractEvent<
-    CardRedeemedEvent.InputTuple,
-    CardRedeemedEvent.OutputTuple,
-    CardRedeemedEvent.OutputObject
+    FeesAddressUpdatedEvent.InputTuple,
+    FeesAddressUpdatedEvent.OutputTuple,
+    FeesAddressUpdatedEvent.OutputObject
   >;
   getEvent(
-    key: "CardTypeAdded"
+    key: "MinterRoleGranted"
   ): TypedContractEvent<
-    CardTypeAddedEvent.InputTuple,
-    CardTypeAddedEvent.OutputTuple,
-    CardTypeAddedEvent.OutputObject
-  >;
-  getEvent(
-    key: "CardTypeDeactivated"
-  ): TypedContractEvent<
-    CardTypeDeactivatedEvent.InputTuple,
-    CardTypeDeactivatedEvent.OutputTuple,
-    CardTypeDeactivatedEvent.OutputObject
-  >;
-  getEvent(
-    key: "CardsMinted"
-  ): TypedContractEvent<
-    CardsMintedEvent.InputTuple,
-    CardsMintedEvent.OutputTuple,
-    CardsMintedEvent.OutputObject
+    MinterRoleGrantedEvent.InputTuple,
+    MinterRoleGrantedEvent.OutputTuple,
+    MinterRoleGrantedEvent.OutputObject
   >;
   getEvent(
     key: "Paused"
@@ -996,6 +1258,20 @@ export interface GiftCardNFT extends BaseContract {
     RoleRevokedEvent.OutputObject
   >;
   getEvent(
+    key: "TokenAdded"
+  ): TypedContractEvent<
+    TokenAddedEvent.InputTuple,
+    TokenAddedEvent.OutputTuple,
+    TokenAddedEvent.OutputObject
+  >;
+  getEvent(
+    key: "TokenStatusChanged"
+  ): TypedContractEvent<
+    TokenStatusChangedEvent.InputTuple,
+    TokenStatusChangedEvent.OutputTuple,
+    TokenStatusChangedEvent.OutputObject
+  >;
+  getEvent(
     key: "TransferBatch"
   ): TypedContractEvent<
     TransferBatchEvent.InputTuple,
@@ -1023,6 +1299,41 @@ export interface GiftCardNFT extends BaseContract {
     UnpausedEvent.OutputTuple,
     UnpausedEvent.OutputObject
   >;
+  getEvent(
+    key: "VoucherAdded"
+  ): TypedContractEvent<
+    VoucherAddedEvent.InputTuple,
+    VoucherAddedEvent.OutputTuple,
+    VoucherAddedEvent.OutputObject
+  >;
+  getEvent(
+    key: "VoucherMintedSingle"
+  ): TypedContractEvent<
+    VoucherMintedSingleEvent.InputTuple,
+    VoucherMintedSingleEvent.OutputTuple,
+    VoucherMintedSingleEvent.OutputObject
+  >;
+  getEvent(
+    key: "VoucherRedeemed"
+  ): TypedContractEvent<
+    VoucherRedeemedEvent.InputTuple,
+    VoucherRedeemedEvent.OutputTuple,
+    VoucherRedeemedEvent.OutputObject
+  >;
+  getEvent(
+    key: "VoucherToggled"
+  ): TypedContractEvent<
+    VoucherToggledEvent.InputTuple,
+    VoucherToggledEvent.OutputTuple,
+    VoucherToggledEvent.OutputObject
+  >;
+  getEvent(
+    key: "VouchersMintedBatch"
+  ): TypedContractEvent<
+    VouchersMintedBatchEvent.InputTuple,
+    VouchersMintedBatchEvent.OutputTuple,
+    VouchersMintedBatchEvent.OutputObject
+  >;
 
   filters: {
     "ApprovalForAll(address,address,bool)": TypedContractEvent<
@@ -1036,48 +1347,26 @@ export interface GiftCardNFT extends BaseContract {
       ApprovalForAllEvent.OutputObject
     >;
 
-    "CardRedeemed(uint256,address,address,uint256)": TypedContractEvent<
-      CardRedeemedEvent.InputTuple,
-      CardRedeemedEvent.OutputTuple,
-      CardRedeemedEvent.OutputObject
+    "FeesAddressUpdated(address)": TypedContractEvent<
+      FeesAddressUpdatedEvent.InputTuple,
+      FeesAddressUpdatedEvent.OutputTuple,
+      FeesAddressUpdatedEvent.OutputObject
     >;
-    CardRedeemed: TypedContractEvent<
-      CardRedeemedEvent.InputTuple,
-      CardRedeemedEvent.OutputTuple,
-      CardRedeemedEvent.OutputObject
-    >;
-
-    "CardTypeAdded(uint256,address,uint256)": TypedContractEvent<
-      CardTypeAddedEvent.InputTuple,
-      CardTypeAddedEvent.OutputTuple,
-      CardTypeAddedEvent.OutputObject
-    >;
-    CardTypeAdded: TypedContractEvent<
-      CardTypeAddedEvent.InputTuple,
-      CardTypeAddedEvent.OutputTuple,
-      CardTypeAddedEvent.OutputObject
+    FeesAddressUpdated: TypedContractEvent<
+      FeesAddressUpdatedEvent.InputTuple,
+      FeesAddressUpdatedEvent.OutputTuple,
+      FeesAddressUpdatedEvent.OutputObject
     >;
 
-    "CardTypeDeactivated(uint256)": TypedContractEvent<
-      CardTypeDeactivatedEvent.InputTuple,
-      CardTypeDeactivatedEvent.OutputTuple,
-      CardTypeDeactivatedEvent.OutputObject
+    "MinterRoleGranted(address)": TypedContractEvent<
+      MinterRoleGrantedEvent.InputTuple,
+      MinterRoleGrantedEvent.OutputTuple,
+      MinterRoleGrantedEvent.OutputObject
     >;
-    CardTypeDeactivated: TypedContractEvent<
-      CardTypeDeactivatedEvent.InputTuple,
-      CardTypeDeactivatedEvent.OutputTuple,
-      CardTypeDeactivatedEvent.OutputObject
-    >;
-
-    "CardsMinted(address,uint256[],uint256[],address)": TypedContractEvent<
-      CardsMintedEvent.InputTuple,
-      CardsMintedEvent.OutputTuple,
-      CardsMintedEvent.OutputObject
-    >;
-    CardsMinted: TypedContractEvent<
-      CardsMintedEvent.InputTuple,
-      CardsMintedEvent.OutputTuple,
-      CardsMintedEvent.OutputObject
+    MinterRoleGranted: TypedContractEvent<
+      MinterRoleGrantedEvent.InputTuple,
+      MinterRoleGrantedEvent.OutputTuple,
+      MinterRoleGrantedEvent.OutputObject
     >;
 
     "Paused(address)": TypedContractEvent<
@@ -1135,6 +1424,28 @@ export interface GiftCardNFT extends BaseContract {
       RoleRevokedEvent.OutputObject
     >;
 
+    "TokenAdded(string,address,string,uint8)": TypedContractEvent<
+      TokenAddedEvent.InputTuple,
+      TokenAddedEvent.OutputTuple,
+      TokenAddedEvent.OutputObject
+    >;
+    TokenAdded: TypedContractEvent<
+      TokenAddedEvent.InputTuple,
+      TokenAddedEvent.OutputTuple,
+      TokenAddedEvent.OutputObject
+    >;
+
+    "TokenStatusChanged(string,bool)": TypedContractEvent<
+      TokenStatusChangedEvent.InputTuple,
+      TokenStatusChangedEvent.OutputTuple,
+      TokenStatusChangedEvent.OutputObject
+    >;
+    TokenStatusChanged: TypedContractEvent<
+      TokenStatusChangedEvent.InputTuple,
+      TokenStatusChangedEvent.OutputTuple,
+      TokenStatusChangedEvent.OutputObject
+    >;
+
     "TransferBatch(address,address,address,uint256[],uint256[])": TypedContractEvent<
       TransferBatchEvent.InputTuple,
       TransferBatchEvent.OutputTuple,
@@ -1177,6 +1488,61 @@ export interface GiftCardNFT extends BaseContract {
       UnpausedEvent.InputTuple,
       UnpausedEvent.OutputTuple,
       UnpausedEvent.OutputObject
+    >;
+
+    "VoucherAdded(uint256,address,uint256)": TypedContractEvent<
+      VoucherAddedEvent.InputTuple,
+      VoucherAddedEvent.OutputTuple,
+      VoucherAddedEvent.OutputObject
+    >;
+    VoucherAdded: TypedContractEvent<
+      VoucherAddedEvent.InputTuple,
+      VoucherAddedEvent.OutputTuple,
+      VoucherAddedEvent.OutputObject
+    >;
+
+    "VoucherMintedSingle(address,uint256,uint256,address)": TypedContractEvent<
+      VoucherMintedSingleEvent.InputTuple,
+      VoucherMintedSingleEvent.OutputTuple,
+      VoucherMintedSingleEvent.OutputObject
+    >;
+    VoucherMintedSingle: TypedContractEvent<
+      VoucherMintedSingleEvent.InputTuple,
+      VoucherMintedSingleEvent.OutputTuple,
+      VoucherMintedSingleEvent.OutputObject
+    >;
+
+    "VoucherRedeemed(uint256,address,address,uint256)": TypedContractEvent<
+      VoucherRedeemedEvent.InputTuple,
+      VoucherRedeemedEvent.OutputTuple,
+      VoucherRedeemedEvent.OutputObject
+    >;
+    VoucherRedeemed: TypedContractEvent<
+      VoucherRedeemedEvent.InputTuple,
+      VoucherRedeemedEvent.OutputTuple,
+      VoucherRedeemedEvent.OutputObject
+    >;
+
+    "VoucherToggled(uint256,bool)": TypedContractEvent<
+      VoucherToggledEvent.InputTuple,
+      VoucherToggledEvent.OutputTuple,
+      VoucherToggledEvent.OutputObject
+    >;
+    VoucherToggled: TypedContractEvent<
+      VoucherToggledEvent.InputTuple,
+      VoucherToggledEvent.OutputTuple,
+      VoucherToggledEvent.OutputObject
+    >;
+
+    "VouchersMintedBatch(address,uint256[],uint256[],address)": TypedContractEvent<
+      VouchersMintedBatchEvent.InputTuple,
+      VouchersMintedBatchEvent.OutputTuple,
+      VouchersMintedBatchEvent.OutputObject
+    >;
+    VouchersMintedBatch: TypedContractEvent<
+      VouchersMintedBatchEvent.InputTuple,
+      VouchersMintedBatchEvent.OutputTuple,
+      VouchersMintedBatchEvent.OutputObject
     >;
   };
 }

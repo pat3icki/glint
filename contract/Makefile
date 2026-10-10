@@ -11,7 +11,7 @@
 
 .PHONY: init compile test clean clean-abi clean-bin clean-bindings clean-all
 
-CONTRACT_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
+CONTRACT_DIR := $(patsubst %/,%,$(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
 
 # Writable cache dir for Hardhat (avoids EROFS errors on /home/.local in some envs)
 HARDHAT_HOME := $(CONTRACT_DIR)/.hardhat-home
@@ -21,15 +21,19 @@ HARDHAT_ENV := HARDHAT_DISABLE_TELEMETRY_PROMPT=true \
                XDG_DATA_HOME=$(HARDHAT_HOME) \
                XDG_CONFIG_HOME=$(HARDHAT_HOME)
 
+OUT_DIR := $(CONTRACT_DIR)/out
+GLINT_SRC := $(CONTRACT_DIR)/src/glint/dough.sol
+PAYMASTER_SRC := $(CONTRACT_DIR)/src/paymaster/paymaster.sol
+
 # ── Dependency installation ──────────────────────────────────
 
 init: 
 	@echo "→ Installing npm dependencies..."
 	cd $(CONTRACT_DIR) && npm install --legacy-peer-deps
 	@echo "→ Setting up contracts directory..."
-	mkdir -p $(CONTRACT_DIR)/contracts
-	cp $(CONTRACT_DIR)/src/glint/glint.sol $(CONTRACT_DIR)/contracts/GiftCardNFT.sol
-	cp $(CONTRACT_DIR)/src/paymaster/paymaster.sol $(CONTRACT_DIR)/contracts/GiftCardPaymaster.sol
+	mkdir -p $(OUT_DIR)/contracts
+	cp $(GLINT_SRC) $(OUT_DIR)/contracts/GlintDough.sol
+	cp $(PAYMASTER_SRC) $(OUT_DIR)/contracts/GlintCardPaymaster.sol
 	@echo "✓ Init complete. Run 'make compile' to build."
 
 # ── Build ────────────────────────────────────────────────────
@@ -53,21 +57,20 @@ clean:
 	@echo "→ Removing build artefacts..."
 	mkdir -p $(HARDHAT_HOME)
 	cd $(CONTRACT_DIR) && $(HARDHAT_ENV) npx hardhat clean
-
-	rm -rf $(HARDHAT_HOME) $(CONTRACT_DIR)/abi $(CONTRACT_DIR)/bin $(CONTRACT_DIR)/bindings
+	rm -rf $(HARDHAT_HOME) $(OUT_DIR)
 	@echo "✓ Clean done."
 
 clean-abi:
-	rm -rf $(CONTRACT_DIR)/abi
+	rm -rf $(OUT_DIR)/abi
 
 clean-bin:
-	rm -rf $(CONTRACT_DIR)/bin
+	rm -rf $(OUT_DIR)/bin
 
 clean-bindings:
-	rm -rf $(CONTRACT_DIR)/bindings
+	rm -rf $(OUT_DIR)/bindings
 
 clean-all: clean
 	@echo "→ Removing node_modules..."
-	rm -rf $(CONTRACT_DIR)/node_modules $(CONTRACT_DIR)/contracts
+	rm -rf $(CONTRACT_DIR)/node_modules
 	@echo "✓ Full clean done."
 

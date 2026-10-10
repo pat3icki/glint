@@ -4,12 +4,12 @@ import * as fs from "fs";
 import * as path from "path";
 
 subtask("export-bin", async (_, hre) => {
-  const binDir = path.join(hre.config.paths.root, "bin");
+  const binDir = path.join(hre.config.paths.root, "out", "bin");
   if (!fs.existsSync(binDir)) {
     fs.mkdirSync(binDir, { recursive: true });
   }
 
-  const contractsToExport = ["GiftCardNFT", "GiftCardPaymaster"];
+  const contractsToExport = ["GlintDough", "GlintCardPaymaster"];
 
   for (const contractName of contractsToExport) {
     try {

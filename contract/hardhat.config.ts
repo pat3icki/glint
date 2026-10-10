@@ -24,24 +24,24 @@ const config: HardhatUserConfig = {
     ],
   },
   paths: {
-    sources: "./contracts",
+    sources: "./out/contracts",
     tests: "./test",
     cache: "./cache",
     artifacts: "./artifacts",
   },
   abiExporter: {
-    path: "./abi",
+    path: "./out/abi",
     runOnCompile: true,
     clear: true,
     flat: true,
-    only: ["GiftCardNFT", "GiftCardPaymaster"],
+    only: ["GlintDough", "GlintCardPaymaster"],
     spacing: 2,
     format: "json",
   },
   goabigen: {
-    outdir: "./bindings/go/",
+    outdir: "./out/bindings-go/",
     runOnCompile: true,
-    only: ["GiftCardNFT", "GiftCardPaymaster"],
+    only: ["GlintDough", "GlintCardPaymaster"],
   },
 };
 

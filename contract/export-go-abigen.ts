@@ -21,15 +21,15 @@ declare module "hardhat/types/config" {
 
 subtask("export-go-abigen", async (_, hre) => {
   const config = hre.config.goabigen;
-  const abiDir = path.join(hre.config.paths.root, "abi");
-  const binDir = path.join(hre.config.paths.root, "bin");
+  const abiDir = path.join(hre.config.paths.root, "out", "abi");
+  const binDir = path.join(hre.config.paths.root, "out", "bin");
   const bindingsDir = path.join(
     hre.config.paths.root,
     config?.outdir || ""
   );
 
 
-  const contracts = config?.only || ["GiftCardNFT", "GiftCardPaymaster"];
+  const contracts = config?.only || ["GlintDough", "GlintCardPaymaster"];
 
   for (const name of contracts) {
     const abiFile = path.join(abiDir, `${name}.json`);
