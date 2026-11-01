@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/paused",
+  "title": "Paused event data",
+  "type": "object",
+  "required": ["account"],
+  "additionalProperties": false,
+  "properties": {
+    "account": { "type": "string", "pattern": "^0x[0-9a-f]{40}$" }
+  }
+}

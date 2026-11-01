@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/entity/voucher_balance",
+  "title": "voucher_balance entity state",
+  "description": "Per-holder ERC-1155 balance derived exclusively from TransferSingle/TransferBatch.",
+  "type": "object",
+  "required": ["holder", "token_id", "balance"],
+  "additionalProperties": false,
+  "properties": {
+    "holder":   { "type": "string", "pattern": "^0x[0-9a-f]{40}$" },
+    "token_id": { "type": "string" },
+    "balance":  { "type": "string", "description": "Current balance as decimal string" }
+  }
+}

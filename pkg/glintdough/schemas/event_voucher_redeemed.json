@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/voucher_redeemed",
+  "title": "VoucherRedeemed event data",
+  "type": "object",
+  "required": ["quantity"],
+  "additionalProperties": false,
+  "properties": {
+    "token_id": { "type": "string", "description": "ERC-1155 token ID (indexed, as decimal string)" },
+    "redeemer": { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Redeemer address (indexed)" },
+    "to":       { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Collateral recipient address" },
+    "quantity": { "type": "string", "description": "Number of vouchers redeemed (uint256 as decimal string)" }
+  }
+}

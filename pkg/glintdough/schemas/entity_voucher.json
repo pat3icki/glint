@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/entity/voucher",
+  "title": "voucher entity state",
+  "type": "object",
+  "required": ["token_id", "collateral_token", "denomination", "is_active"],
+  "additionalProperties": false,
+  "properties": {
+    "token_id":         { "type": "string", "description": "ERC-1155 token ID as decimal string" },
+    "collateral_token": { "type": "string", "pattern": "^0x[0-9a-f]{40}$" },
+    "denomination":     { "type": "string", "description": "Collateral amount per voucher as decimal string" },
+    "creation_fees":    { "type": "string", "description": "Fee per mint as decimal string" },
+    "is_active":        { "type": "boolean" },
+    "total_minted":     { "type": "string", "description": "Cumulative minted count as decimal string" },
+    "total_redeemed":   { "type": "string", "description": "Cumulative redeemed count as decimal string" }
+  }
+}

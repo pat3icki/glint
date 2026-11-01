@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/entity/physical_card",
+  "title": "physical_card entity state",
+  "type": "object",
+  "required": ["serial_hash", "checksum"],
+  "additionalProperties": false,
+  "properties": {
+    "serial_hash": { "type": "string", "pattern": "^0x[0-9a-f]{64}$" },
+    "checksum":    { "type": "string", "pattern": "^0x[0-9a-f]{64}$" }
+  }
+}

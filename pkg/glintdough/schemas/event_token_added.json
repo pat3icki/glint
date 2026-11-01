@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/token_added",
+  "title": "TokenAdded event data",
+  "type": "object",
+  "required": ["symbol", "decimals"],
+  "additionalProperties": false,
+  "properties": {
+    "key":           { "type": "string", "description": "Collateral token string key (indexed, recovered from topic)" },
+    "smart_contract":{ "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "ERC-20 contract address (indexed)" },
+    "symbol":        { "type": "string" },
+    "decimals":      { "type": "integer", "minimum": 0, "maximum": 255 }
+  }
+}

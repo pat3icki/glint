@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/token_status_changed",
+  "title": "TokenStatusChanged event data",
+  "type": "object",
+  "required": ["is_active"],
+  "additionalProperties": false,
+  "properties": {
+    "key":       { "type": "string", "description": "Collateral token string key (indexed)" },
+    "is_active": { "type": "boolean" }
+  }
+}

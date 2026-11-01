@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/voucher_added",
+  "title": "VoucherAdded event data",
+  "type": "object",
+  "required": ["denomination"],
+  "additionalProperties": false,
+  "properties": {
+    "token_id":     { "type": "string", "description": "ERC-1155 token ID (indexed, as decimal string)" },
+    "token":        { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Collateral token address (indexed)" },
+    "denomination": { "type": "string", "description": "Collateral amount per voucher (uint256 as decimal string)" }
+  }
+}

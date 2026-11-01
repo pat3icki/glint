@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/transfer_single",
+  "title": "TransferSingle event data",
+  "type": "object",
+  "required": ["id", "value"],
+  "additionalProperties": false,
+  "properties": {
+    "operator": { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Operator address (indexed)" },
+    "from":     { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Sender address (indexed); 0x000...000 for mint" },
+    "to":       { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Recipient address (indexed); 0x000...000 for burn" },
+    "id":       { "type": "string", "description": "ERC-1155 token ID (uint256 as decimal string)" },
+    "value":    { "type": "string", "description": "Amount transferred (uint256 as decimal string)" }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/voucher_toggled",
+  "title": "VoucherToggled event data",
+  "type": "object",
+  "required": ["status"],
+  "additionalProperties": false,
+  "properties": {
+    "token_id": { "type": "string", "description": "ERC-1155 token ID (indexed, as decimal string)" },
+    "status":   { "type": "boolean" }
+  }
+}

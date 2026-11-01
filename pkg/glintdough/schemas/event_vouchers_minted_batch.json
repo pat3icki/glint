@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/vouchers_minted_batch",
+  "title": "VouchersMintedBatch event data",
+  "type": "object",
+  "required": ["token_ids", "quantities"],
+  "additionalProperties": false,
+  "properties": {
+    "minter":     { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Minter address (indexed)" },
+    "token_ids":  { "type": "array",  "items": { "type": "string" }, "description": "ERC-1155 token IDs (uint256[] as decimal strings)" },
+    "quantities": { "type": "array",  "items": { "type": "string" }, "description": "Quantities (uint256[] as decimal strings)" },
+    "to":         { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Recipient address (indexed)" }
+  }
+}

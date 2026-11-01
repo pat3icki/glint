@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/physical_card_registered",
+  "title": "PhysicalCardRegistered event data",
+  "type": "object",
+  "required": ["checksum"],
+  "additionalProperties": false,
+  "properties": {
+    "serial_hash": { "type": "string", "pattern": "^0x[0-9a-f]{64}$", "description": "keccak256(serial) (indexed)" },
+    "checksum":    { "type": "string", "pattern": "^0x[0-9a-f]{64}$" }
+  }
+}

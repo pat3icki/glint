@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/uri",
+  "title": "URI event data",
+  "type": "object",
+  "required": ["value"],
+  "additionalProperties": false,
+  "properties": {
+    "value": { "type": "string", "description": "Metadata URI string" },
+    "id":    { "type": "string", "description": "ERC-1155 token ID (indexed, as decimal string)" }
+  }
+}

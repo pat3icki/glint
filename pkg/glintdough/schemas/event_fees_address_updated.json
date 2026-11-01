@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/fees_address_updated",
+  "title": "FeesAddressUpdated event data",
+  "type": "object",
+  "required": ["fees_address"],
+  "additionalProperties": false,
+  "properties": {
+    "fees_address": { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "New fees address (indexed)" }
+  }
+}

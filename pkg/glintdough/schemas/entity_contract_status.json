@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/entity/contract_status",
+  "title": "contract_status entity state",
+  "type": "object",
+  "required": ["paused"],
+  "additionalProperties": false,
+  "properties": {
+    "paused": { "type": "boolean" }
+  }
+}

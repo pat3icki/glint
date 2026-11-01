@@ -1,0 +1,14 @@
+version: "2"
+sql:
+  - engine: "postgresql"
+    schema: "internal/db/schema"
+    queries: "internal/db/queries"
+    gen:
+      go:
+        package: "sqlc"
+        out: "internal/db/sqlc"
+        overrides:
+          - db_type: "blockchain.evm_address"
+            go_type: "string"
+          - db_type: "blockchain.evm_hash32"
+            go_type: "string"

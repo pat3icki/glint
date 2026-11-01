@@ -88,7 +88,6 @@ contract GlintDough is ERC1155, AccessControl, Pausable, ReentrancyGuard {
 
     // ------------------- Events -------------------
 
-    // Formerly from `Token`
     event TokenAdded(
         string indexed key,
         address indexed smartContract,

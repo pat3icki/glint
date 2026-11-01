@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/voucher_minted_single",
+  "title": "VoucherMintedSingle event data",
+  "type": "object",
+  "required": ["quantity"],
+  "additionalProperties": false,
+  "properties": {
+    "minter":   { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Minter address (indexed)" },
+    "token_id": { "type": "string", "description": "ERC-1155 token ID (indexed, as decimal string)" },
+    "quantity": { "type": "string", "description": "Number of vouchers minted (uint256 as decimal string)" },
+    "to":       { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Recipient address (indexed)" }
+  }
+}

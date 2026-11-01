@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/entity/collateral_token",
+  "title": "collateral_token entity state",
+  "type": "object",
+  "required": ["key", "smart_contract", "symbol", "decimals", "is_active"],
+  "additionalProperties": false,
+  "properties": {
+    "key":            { "type": "string" },
+    "smart_contract": { "type": "string", "pattern": "^0x[0-9a-f]{40}$" },
+    "symbol":         { "type": "string" },
+    "decimals":       { "type": "integer", "minimum": 0, "maximum": 255 },
+    "is_active":      { "type": "boolean" }
+  }
+}

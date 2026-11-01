@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/entity/contract_config",
+  "title": "contract_config entity state",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "next_token_id": { "type": "string", "description": "Current nextTokenId as decimal string" },
+    "fees_address":  { "type": "string", "pattern": "^0x[0-9a-f]{40}$" }
+  }
+}

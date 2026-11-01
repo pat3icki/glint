@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/role_granted",
+  "title": "RoleGranted event data",
+  "type": "object",
+  "required": ["role", "account", "sender"],
+  "additionalProperties": false,
+  "properties": {
+    "role":    { "type": "string", "pattern": "^0x[0-9a-f]{64}$", "description": "Role bytes32 (indexed)" },
+    "account": { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Account address (indexed)" },
+    "sender":  { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Sender address (indexed)" }
+  }
+}

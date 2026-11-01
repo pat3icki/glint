@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/config",
+  "title": "GlintDough contract config schema",
+  "type": "object",
+  "additionalProperties": true,
+  "properties": {
+    "deployed_block": { "type": "integer", "minimum": 0, "description": "Block number of the deployment transaction" },
+    "fees_address":   { "type": "string", "pattern": "^0x[0-9a-f]{40}$", "description": "Initial fees address from constructor" }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "glintdough/event/role_admin_changed",
+  "title": "RoleAdminChanged event data",
+  "type": "object",
+  "required": ["role", "previous_admin_role", "new_admin_role"],
+  "additionalProperties": false,
+  "properties": {
+    "role":               { "type": "string", "pattern": "^0x[0-9a-f]{64}$" },
+    "previous_admin_role":{ "type": "string", "pattern": "^0x[0-9a-f]{64}$" },
+    "new_admin_role":     { "type": "string", "pattern": "^0x[0-9a-f]{64}$" }
+  }
+}
