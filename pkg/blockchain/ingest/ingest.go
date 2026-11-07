@@ -70,7 +70,7 @@ func (idx *Indexer) RunOnce(ctx context.Context) error {
 			fromBlock = idx.cfg.StartBlock
 		} else {
 			return fmt.Errorf("ingest: GetCursor: %w", err)
-		}
+		} 
 	} else {
 		fromBlock++ // resume from the block after the last processed one
 	}

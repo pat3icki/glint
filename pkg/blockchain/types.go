@@ -103,3 +103,5 @@ type EntityType struct {
 	// SchemaVersion matches flavour_entity_types.schema_version.
 	SchemaVersion int
 }
+
+
